@@ -2,6 +2,10 @@
 
 This simple program allows you to play the guess the number game with some options.
 
+## Download:
+
+You can Download the game using [this link](https://github.com/tecwindow/GuessTheNnumber/releases/download/v1.0.0/GuessTheNumber-V1.0.0.zip)
+
 ## game options:
 
 You have 3 modes to choose from:
