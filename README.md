@@ -6,9 +6,9 @@ This simple program allows you to play the guess the number game with some optio
 
 You have 3 modes to choose from:
 
-- Easy, makes the correct number 3 digits.
-- Normal, makes the correct number 4 digits.
-- Hard, makes the correct number 5 digits.
+- Easy, makes the random number 3 digits.
+- Normal, makes the random number 4 digits.
+- Hard, makes the random number 5 digits.
 
 You can also select the number of tries, thinking time, and disable the game sounds.
 
