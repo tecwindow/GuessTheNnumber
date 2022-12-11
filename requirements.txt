@@ -1,0 +1,3 @@
+wxpython
+accessible_output2.outputs.auto
+pywinmm
