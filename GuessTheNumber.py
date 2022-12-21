@@ -269,7 +269,7 @@ class Play(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(self.ConvertSeconds(self.time), interrupt=True), self.IDRemainingTime)
 		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(self.ConvertSeconds(int(GameSettings["TryTime"])*60 - self.time), interrupt=True), self.IDElapsedTime)
 		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(F"{self.Instructions}.", interrupt=True), self.IDInstructions)
-		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(F"{self.Result}.", interrupt=True), self.IDResult)
+		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(F"{self.Result}", interrupt=True), self.IDResult)
 		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(F"You tryed {self.Tries} times.", interrupt=True), self.IDTries)
 		self.Bind(wx.EVT_MENU, lambda ev: self.o.speak(F"Remaining Trise: {self.RemainingTrise}.", interrupt=True), self.IDRemainingTrise)
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -324,11 +324,14 @@ class Play(wx.Frame):
 				self.Result = self.Failed
 				if GameSettings["Sounds"] == "True":
 					pywinmm.load("sounds/fail.wav").play()
-				self.o.speak(F"{self.CantTrye}! {self.Result}.", interrupt=True)
+				self.o.speak(F"{self.CantTrye}, {self.Result}", interrupt=True)
 				self.CurrentNumber.Value = ""
 				self.RandomNumber = self.RandomNumbers()
 				self.RemainingTrise = int(GameSettings["NumberTries"])
 				self.Tries = 0
+				self.time = int(GameSettings["TryTime"])*60
+				self.Instructions = F"In {self.ConvertSeconds(self.time)} and {self.RemainingTrise} Tries, try to find the correct number between {self.Min} and {self.Max}."
+				self.o.speak(F"{self.Instructions}", interrupt=False)
 			elif self.CurrentNumber.Value == self.RandomNumber:
 				self.Success =F"Well done, the correct number is {self.RandomNumber}, you found it in {Elapsed} and {self.Tries} tries."
 				self.Result = self.Success
@@ -340,12 +343,14 @@ class Play(wx.Frame):
 				self.RandomNumber = self.RandomNumbers()
 				self.RemainingTrise = int(GameSettings["NumberTries"]) 
 				self.Tries = 0
+				self.Instructions = F"In {self.ConvertSeconds(self.time)} and {self.RemainingTrise} Tries, try to find the correct number between {self.Min} and {self.Max}."
+				self.o.speak(F"{self.Instructions}", interrupt=False)
 			elif self.CurrentNumber.Value < self.RandomNumber:
 				self.Greater = F"The correct number is greater than {self.CurrentNumber.Value}."
 				self.Result = self.Greater
 				if GameSettings["Sounds"] == "True":
 					pywinmm.load("sounds/error.wav").play()
-				self.o.speak(F"{self.Result}.", interrupt=True)
+				self.o.speak(F"{self.Result}", interrupt=True)
 				self.RemainingTrise -= 1
 				self.CurrentNumber.Value = ""
 			elif self.CurrentNumber.Value > self.RandomNumber:
@@ -353,7 +358,7 @@ class Play(wx.Frame):
 				self.Result = self.Less
 				if GameSettings["Sounds"] == "True":
 					pywinmm.load("sounds/error.wav").play()
-				self.o.speak(F"{self.Result}.", interrupt=True)
+				self.o.speak(F"{self.Result}", interrupt=True)
 				self.RemainingTrise -= 1
 				self.CurrentNumber.Value = ""
 
@@ -362,12 +367,19 @@ class Play(wx.Frame):
 
 	def OnTimer(self, event):
 		if not self.time:
-			self.Result = self.Failed
+			self.Failed = F"Unfortunately, you failed to find the correct number, the correct number is {self.RandomNumber}."
+			self.Result = F"{self.TimeEnd}, {self.Failed}"
+			self.o.speak(F"{self.Result}", interrupt=False)
+			self.RandomNumber = self.RandomNumbers()
+			self.RemainingTrise = int(GameSettings["NumberTries"])
+			self.Tries = 0
+			self.time = int(GameSettings["TryTime"])*60
+			self.Instructions = F"In {self.ConvertSeconds(self.time)} and {self.RemainingTrise} Tries, try to find the correct number between {self.Min} and {self.Max}."
+			self.Info.SetLabel(self.Instructions)
+			self.o.speak(F"{self.Instructions}", interrupt=False)
 			if GameSettings["Sounds"] == "True":
 				pywinmm.load("sounds/fail.wav").play()
-			self.o.speak(F"{self.TimeEnd}, {self.Result}", interrupt=True)
 			self.CurrentNumber.Value = ""
-			self.time = int(GameSettings["TryTime"])*60
 		else:
 			self.time -= 1
 			self.Instructions = F"In {self.ConvertSeconds(self.time)} and {self.RemainingTrise} Tries, try to find the correct number between {self.Min} and {self.Max}."
