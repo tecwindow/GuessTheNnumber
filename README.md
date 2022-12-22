@@ -4,7 +4,7 @@ This simple program allows you to play the guess the number game with some optio
 
 ## Download:
 
-You can Download the game using [this link](https://github.com/tecwindow/GuessTheNnumber/releases/download/v1.0.0/GuessTheNumber-V1.0.0.zip)
+You can Download the game using [this link](https://github.com/tecwindow/GuessTheNnumber/releases/download/V1.1.0/GuessTheNnumber-V1.1.0.zip)
 
 ## game options:
 

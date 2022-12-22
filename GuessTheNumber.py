@@ -100,7 +100,7 @@ class GuessTheNumber(wx.Frame):
 #creating OnAboutProgram function to show information about this program.
 	def OnAboutProgram(self, event):
 		AboutDialog = wx.MessageDialog(self, """Guess the number.
-Version: 1.0.
+Version: 1.1.
 This game was developed by:
 Ahmed Bakr.
 Qais Alrifai.
